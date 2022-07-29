@@ -1,13 +1,13 @@
 const express = require('express');
 const { celebrate, Joi, Segments } = require('celebrate');
-const controller = require('../controllers/questions');
+const quesitonsController = require('../controllers/questions');
 const verify = require('../middleware/verifyToken');
 
 const router = express.Router();
 
-router.get('/', controller.getAllQuestions);
+router.get('/', quesitonsController.getAllQuestions);
 
-router.get('/:id', controller.getQuestion);
+router.get('/:id', quesitonsController.getQuestion);
 
 router.post(
   '/',
@@ -19,7 +19,7 @@ router.post(
     }),
   }),
   verify,
-  controller.postQuestion
+  quesitonsController.postQuestion
 );
 
 router.patch(
@@ -31,9 +31,15 @@ router.patch(
       tag: Joi.array().items(Joi.string().required()).min(1),
     }),
   }),
-  controller.updateQuestion
+  quesitonsController.updateQuestion
 );
 
-router.delete('/:id', controller.deleteQuestion);
+router.delete(
+  '/:id',
+  celebrate({
+    [Segments.BODY]: Joi.object().keys({}),
+  }),
+  quesitonsController.deleteQuestion
+);
 
 module.exports = router;
