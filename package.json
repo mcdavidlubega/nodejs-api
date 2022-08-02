@@ -7,10 +7,10 @@
     "test": "jest",
     "test:coverage": "jest --coverage",
     "test:coveralls": "jest --coverage && coveralls < coverage/lcov.info",
-    "start": "node src/index.js",
-    "dev": "nodemon src/index.js",
-    "babel": "babel-node index.js",
-    "lint": "eslint src --fix"
+    "start": "node build/index.js",
+    "dev": "nodemon --exec babel-node src/index.js",
+    "build": "babel src -d build",
+    "lint": "eslint build --fix"
   },
   "author": "",
   "license": "ISC",

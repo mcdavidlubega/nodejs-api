@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const { MONGO_URI } = process.env;
 
@@ -16,4 +16,4 @@ function connect() {
     });
 }
 
-module.exports = connect();
+export default connect;
