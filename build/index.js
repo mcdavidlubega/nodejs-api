@@ -1,16 +1,16 @@
-const _app = _interopRequireDefault(require('./app'));
+"use strict";
 
-const _database = _interopRequireDefault(require('./db/database'));
+var _app = _interopRequireDefault(require("./app"));
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+var _database = _interopRequireDefault(require("./db/database"));
 
-(0, _database.default)();
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-const _ref = process.env || 3000;
-const { PORT } = _ref;
+(0, _database["default"])();
 
-_app.default.listen(PORT, () => {
-  console.log('Connecting on port '.concat(PORT, ' ...'));
+var _ref = process.env || 3000,
+    PORT = _ref.PORT;
+
+_app["default"].listen(PORT, function () {
+  console.log("Connecting on port ".concat(PORT, " ..."));
 });

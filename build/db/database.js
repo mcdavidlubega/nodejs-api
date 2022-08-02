@@ -1,29 +1,26 @@
-Object.defineProperty(exports, '__esModule', {
-  value: true,
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
-const _mongoose = _interopRequireDefault(require('mongoose'));
+var _mongoose = _interopRequireDefault(require("mongoose"));
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-const { MONGO_URI } = process.env;
+var MONGO_URI = process.env.MONGO_URI;
 
 function connect() {
   // Connecting to the database
-  _mongoose.default
-    .connect(MONGO_URI, {})
-    .then(() => {
-      console.log('Successfully connected to database');
-    })
-    .catch((error) => {
-      console.log('database connection failed. exiting now...');
-      console.error(error);
-      process.exit(1);
-    });
+  _mongoose["default"].connect(MONGO_URI, {}).then(function () {
+    console.log('Successfully connected to database');
+  })["catch"](function (error) {
+    console.log('database connection failed. exiting now...');
+    console.error(error);
+    process.exit(1);
+  });
 }
 
-const _default = connect;
-exports.default = _default;
+var _default = connect;
+exports["default"] = _default;
