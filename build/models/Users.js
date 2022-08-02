@@ -1,34 +1,37 @@
-Object.defineProperty(exports, '__esModule', {
-  value: true,
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
 });
-exports.default = void 0;
+exports["default"] = void 0;
 
-const _mongoose = _interopRequireDefault(require('mongoose'));
+var _mongoose = _interopRequireDefault(require("mongoose"));
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-const userSchema = new _mongoose.default.Schema({
-  userId: {
-    type: String,
-    minLength: 10,
-  },
+var userSchema = new _mongoose["default"].Schema({
+  userId: String,
   username: {
     type: String,
-    maxLength: 50,
-    minLength: 3,
+    min: 5,
+    max: 50
   },
   email: {
     type: String,
-    maxLength: 50,
+    min: 6,
+    max: 50
   },
   password: {
     type: String,
-    maxLength: 1024,
+    min: 6,
+    max: 1024
   },
+  date: {
+    type: Date,
+    "default": Date.now
+  }
 });
 
-const _default = _mongoose.default.model('User', userSchema);
+var _default = _mongoose["default"].model('User', userSchema);
 
-exports.default = _default;
+exports["default"] = _default;
