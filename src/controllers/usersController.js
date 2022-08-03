@@ -43,12 +43,9 @@ class usersController {
         const validPass = await bcrypt.compare(password, user.password);
         if (!validPass)
             return res.status(400).json({ message: 'Invalid Password' });
-        const token = jwt.sign(
-            { userId: user.UserId },
-            process.env.TOKEN_SECRET
-        );
-        return res.header('aut-token', token).json({
-            userId: user.userId,
+        const token = jwt.sign({ userId: user._id }, process.env.TOKEN_SECRET);
+        return res.header('auth-token', token).json({
+            userId: user._id,
             username: user.username,
             email: user.email,
             password: '********',
