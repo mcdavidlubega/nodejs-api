@@ -11,7 +11,7 @@ app.use(routes);
 app.use((req, res) => res.status(404).json({ message: 'Resource not found' }));
 
 app.get('/', (req, res) => {
-  res.send('Hello World');
+    res.send('Hello World');
 });
 
 app.use(errors());
