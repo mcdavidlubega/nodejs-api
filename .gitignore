@@ -2,3 +2,4 @@ node_modules
 .env
 .vscode
 config/prod.env
+config/dev.env
