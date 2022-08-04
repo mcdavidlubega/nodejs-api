@@ -7,13 +7,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = void 0;
 
-var _bcrypt = _interopRequireDefault(require("bcrypt"));
-
-var _uuid = require("uuid");
-
-var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
-
-var _Users = _interopRequireDefault(require("../models/Users"));
+var _Questions = _interopRequireDefault(require("../models/Questions"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -29,180 +23,226 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
 
-var usersController = /*#__PURE__*/function () {
-  function usersController() {
-    _classCallCheck(this, usersController);
+var questionsController = /*#__PURE__*/function () {
+  function questionsController() {
+    _classCallCheck(this, questionsController);
   }
 
-  _createClass(usersController, null, [{
-    key: "registerUser",
+  _createClass(questionsController, null, [{
+    key: "getAllQuestions",
     value: function () {
-      var _registerUser = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
-        var _req$body, username, email, password, usernameExists, emailExists, salt, hashedPass, user;
-
+      var _getAllQuestions = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
+        var questions;
         return _regeneratorRuntime().wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _req$body = req.body, username = _req$body.username, email = _req$body.email, password = _req$body.password;
+                _context.prev = 0;
                 _context.next = 3;
-                return _Users["default"].findOne({
-                  username: username
-                });
+                return _Questions["default"].find();
 
               case 3:
-                usernameExists = _context.sent;
+                questions = _context.sent;
+                return _context.abrupt("return", res.status(200).json(questions));
 
-                if (!usernameExists) {
-                  _context.next = 6;
-                  break;
-                }
-
-                return _context.abrupt("return", res.json({
-                  message: 'Username already exisits'
-                }));
-
-              case 6:
-                _context.next = 8;
-                return _Users["default"].findOne({
-                  email: email
-                });
-
-              case 8:
-                emailExists = _context.sent;
-
-                if (!emailExists) {
-                  _context.next = 11;
-                  break;
-                }
-
-                return _context.abrupt("return", res.json({
-                  message: 'Email already exists'
-                }));
-
-              case 11:
-                _context.next = 13;
-                return _bcrypt["default"].genSalt(10);
-
-              case 13:
-                salt = _context.sent;
-                _context.next = 16;
-                return _bcrypt["default"].hash(password, salt);
-
-              case 16:
-                hashedPass = _context.sent;
-                _context.prev = 17;
-                _context.next = 20;
-                return _Users["default"].create({
-                  userId: (0, _uuid.v4)(),
-                  username: username,
-                  email: email,
-                  password: hashedPass
-                });
-
-              case 20:
-                user = _context.sent;
-                return _context.abrupt("return", res.status(201).json({
-                  userId: user.userId,
-                  username: user.username,
-                  email: user.email,
-                  password: '********'
-                }));
-
-              case 24:
-                _context.prev = 24;
-                _context.t0 = _context["catch"](17);
+              case 7:
+                _context.prev = 7;
+                _context.t0 = _context["catch"](0);
                 return _context.abrupt("return", res.status(400).json({
                   message: _context.t0
                 }));
 
-              case 27:
+              case 10:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[17, 24]]);
+        }, _callee, null, [[0, 7]]);
       }));
 
-      function registerUser(_x, _x2) {
-        return _registerUser.apply(this, arguments);
+      function getAllQuestions(_x, _x2) {
+        return _getAllQuestions.apply(this, arguments);
       }
 
-      return registerUser;
+      return getAllQuestions;
     }()
   }, {
-    key: "loginUser",
+    key: "getQuestion",
     value: function () {
-      var _loginUser = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-        var _req$body2, email, password, user, validPass, token;
-
+      var _getQuestion = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
+        var question;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password;
+                _context2.prev = 0;
                 _context2.next = 3;
-                return _Users["default"].findOne({
-                  email: email
-                });
+                return _Questions["default"].findById(req.params.id);
 
               case 3:
-                user = _context2.sent;
+                question = _context2.sent;
+                return _context2.abrupt("return", res.status(200).json(question));
 
-                if (user) {
-                  _context2.next = 6;
-                  break;
-                }
-
+              case 7:
+                _context2.prev = 7;
+                _context2.t0 = _context2["catch"](0);
                 return _context2.abrupt("return", res.status(400).json({
-                  message: 'User not found'
+                  message: _context2.t0
                 }));
 
-              case 6:
-                _context2.next = 8;
-                return _bcrypt["default"].compare(password, user.password);
-
-              case 8:
-                validPass = _context2.sent;
-
-                if (validPass) {
-                  _context2.next = 11;
-                  break;
-                }
-
-                return _context2.abrupt("return", res.status(400).json({
-                  message: 'Invalid Password'
-                }));
-
-              case 11:
-                token = _jsonwebtoken["default"].sign({
-                  userId: user._id
-                }, process.env.TOKEN_SECRET);
-                return _context2.abrupt("return", res.header('auth-token', token).json({
-                  userId: user._id,
-                  username: user.username,
-                  email: user.email,
-                  password: '********'
-                }));
-
-              case 13:
+              case 10:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2);
+        }, _callee2, null, [[0, 7]]);
       }));
 
-      function loginUser(_x3, _x4) {
-        return _loginUser.apply(this, arguments);
+      function getQuestion(_x3, _x4) {
+        return _getQuestion.apply(this, arguments);
       }
 
-      return loginUser;
+      return getQuestion;
+    }()
+  }, {
+    key: "postQuestion",
+    value: function () {
+      var _postQuestion = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3(req, res) {
+        var _req$body, title, description, newQuestion;
+
+        return _regeneratorRuntime().wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _req$body = req.body, title = _req$body.title, description = _req$body.description;
+                _context3.prev = 1;
+                _context3.next = 4;
+                return _Questions["default"].create({
+                  title: title,
+                  description: description,
+                  userId: '62ea7b587ad4dd1b0e04863e'
+                });
+
+              case 4:
+                newQuestion = _context3.sent;
+                return _context3.abrupt("return", res.status(201).json(newQuestion));
+
+              case 8:
+                _context3.prev = 8;
+                _context3.t0 = _context3["catch"](1);
+                return _context3.abrupt("return", res.status(400).json(_context3.t0.message));
+
+              case 11:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, null, [[1, 8]]);
+      }));
+
+      function postQuestion(_x5, _x6) {
+        return _postQuestion.apply(this, arguments);
+      }
+
+      return postQuestion;
+    }()
+  }, {
+    key: "updateQuestion",
+    value: function () {
+      var _updateQuestion = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee4(req, res) {
+        var _req$body2, title, description, preferedAnswer, dateUpdated, question;
+
+        return _regeneratorRuntime().wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                _req$body2 = req.body, title = _req$body2.title, description = _req$body2.description, preferedAnswer = _req$body2.preferedAnswer;
+                dateUpdated = Date.now();
+                _context4.prev = 2;
+                _context4.next = 5;
+                return _Questions["default"].findByIdAndUpdate(req.params.id, {
+                  $set: {
+                    title: title,
+                    description: description,
+                    dateUpdated: dateUpdated,
+                    preferedAnswer: preferedAnswer
+                  }
+                }, {
+                  "new": true
+                });
+
+              case 5:
+                question = _context4.sent;
+                return _context4.abrupt("return", res.status(201).json(question));
+
+              case 9:
+                _context4.prev = 9;
+                _context4.t0 = _context4["catch"](2);
+                return _context4.abrupt("return", res.status(400).json({
+                  message: _context4.t0
+                }));
+
+              case 12:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, null, [[2, 9]]);
+      }));
+
+      function updateQuestion(_x7, _x8) {
+        return _updateQuestion.apply(this, arguments);
+      }
+
+      return updateQuestion;
+    }()
+  }, {
+    key: "deleteQuestion",
+    value: function () {
+      var _deleteQuestion = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee5(req, res) {
+        var question;
+        return _regeneratorRuntime().wrap(function _callee5$(_context5) {
+          while (1) {
+            switch (_context5.prev = _context5.next) {
+              case 0:
+                _context5.prev = 0;
+                _context5.next = 3;
+                return _Questions["default"].deleteOne({
+                  _id: req.params.id
+                });
+
+              case 3:
+                question = _context5.sent;
+                return _context5.abrupt("return", res.status(200).json({
+                  message: 'Question Deleted',
+                  question: question
+                }));
+
+              case 7:
+                _context5.prev = 7;
+                _context5.t0 = _context5["catch"](0);
+                return _context5.abrupt("return", res.status(400).json({
+                  message: _context5.t0
+                }));
+
+              case 10:
+              case "end":
+                return _context5.stop();
+            }
+          }
+        }, _callee5, null, [[0, 7]]);
+      }));
+
+      function deleteQuestion(_x9, _x10) {
+        return _deleteQuestion.apply(this, arguments);
+      }
+
+      return deleteQuestion;
     }()
   }]);
 
-  return usersController;
+  return questionsController;
 }();
 
-var _default = usersController;
+var _default = questionsController;
 exports["default"] = _default;

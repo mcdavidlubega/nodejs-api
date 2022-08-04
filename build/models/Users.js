@@ -10,7 +10,6 @@ var _mongoose = _interopRequireDefault(require("mongoose"));
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var userSchema = new _mongoose["default"].Schema({
-  userId: String,
   username: {
     type: String,
     min: 5,
@@ -26,9 +25,10 @@ var userSchema = new _mongoose["default"].Schema({
     min: 6,
     max: 1024
   },
-  date: {
+  dateCreated: {
     type: Date,
-    "default": Date.now
+    "default": Date.now,
+    immutable: true
   }
 });
 
