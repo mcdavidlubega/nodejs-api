@@ -7,9 +7,9 @@ exports["default"] = void 0;
 
 var _express = require("express");
 
-var _usersController = _interopRequireDefault(require("../../controllers/usersController"));
-
 var _celebrate3 = require("celebrate");
+
+var _usersController = _interopRequireDefault(require("../../controllers/usersController"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
