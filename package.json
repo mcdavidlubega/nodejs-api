@@ -8,7 +8,8 @@
         "test:coverage": "jest --coverage",
         "test:coveralls": "jest --coverage && coveralls < coverage/lcov.info",
         "start": "env-cmd -f ./config/prod.env node build/index.js",
-        "dev": "env-cmd -f ./config/dev.env nodemon --exec babel-node src/index.js",
+        "dev:local": "env-cmd -f ./config/dev.env nodemon --exec babel-node src/index.js",
+        "dev:remote": "env-cmd -f ./config/prod.env nodemon --exec babel-node src/index.js",
         "build": "babel ./src --out-dir ./build",
         "lint": "eslint ."
     },
