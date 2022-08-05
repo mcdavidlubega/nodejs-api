@@ -49,6 +49,7 @@ class usersController {
             username: user.username,
             email: user.email,
             password: '********',
+            token,
         });
     }
 }

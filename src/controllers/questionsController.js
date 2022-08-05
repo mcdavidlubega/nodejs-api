@@ -13,9 +13,12 @@ class questionsController {
     }
 
     static async getQuestion(req, res) {
+        const answers = await Answer.find({ questionId: req.params.id });
         try {
             const question = await Question.findById(req.params.id);
-            return res.status(200).json(question);
+            return res
+                .status(200)
+                .json({ Question: question, Answers: answers });
         } catch (err) {
             return res.status(400).json({ message: err });
         }

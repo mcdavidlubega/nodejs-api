@@ -1,7 +1,9 @@
 import express from 'express';
 import { errors } from 'celebrate';
-
+import connect from './db/database';
 import routes from './routes';
+
+connect();
 
 const app = express();
 app.use(express.json());
