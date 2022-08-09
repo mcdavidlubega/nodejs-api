@@ -5,7 +5,7 @@
     "main": "index.js",
     "scripts": {
         "test": "env-cmd -f ./config/test.env jest",
-        "test:coverage": "jest --coverage",
+        "test:coverage": "env-cmd -f ./config/test.env jest --coverage",
         "test:coveralls": "jest --coverage && coveralls < coverage/lcov.info",
         "start": "env-cmd -f ./config/prod.env node build/index.js",
         "dev:local": "env-cmd -f ./config/dev.env nodemon --exec babel-node src/index.js",

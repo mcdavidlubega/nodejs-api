@@ -9,10 +9,11 @@ class usersController {
 
         const usernameExists = await User.findOne({ username });
         if (usernameExists)
-            return res.json({ message: 'Username already exisits' });
+            return res.status(400).json({ message: 'Username already exists' });
 
         const emailExists = await User.findOne({ email });
-        if (emailExists) return res.json({ message: 'Email already exists' });
+        if (emailExists)
+            return res.status(400).json({ message: 'Email already exists' });
 
         const salt = await bcrypt.genSalt(10);
         const hashedPass = await bcrypt.hash(password, salt);
@@ -25,7 +26,7 @@ class usersController {
                 password: hashedPass,
             });
             //   const newUser = user.save();
-            return res.status(201).json({
+            return res.status(200).json({
                 userId: user.userId,
                 username: user.username,
                 email: user.email,
@@ -39,7 +40,7 @@ class usersController {
     static async loginUser(req, res) {
         const { email, password } = req.body;
         const user = await User.findOne({ email });
-        if (!user) return res.status(400).json({ message: 'User not found' });
+        if (!user) return res.status(400).json({ message: 'Invalid Email' });
         const validPass = await bcrypt.compare(password, user.password);
         if (!validPass)
             return res.status(400).json({ message: 'Invalid Password' });
