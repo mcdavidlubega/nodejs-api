@@ -7,6 +7,8 @@ const router = Router();
 
 router.get('/', questionsController.getAllQuestions);
 router.get('/:id', questionsController.getQuestion);
+router.post('/search/', questionsController.searchQuestions);
+router.post('/top/', questionsController.getMostAnsweredQuestions);
 router.post(
     '/',
     celebrate({
@@ -71,5 +73,37 @@ router.patch(
     '/:id/answers/:aid/resetvote',
     verify,
     questionsController.resetVote
+);
+
+router.get('/:id/answers/:aid/comments', questionsController.getComments);
+
+router.post(
+    '/:id/answers/:aid/comments',
+    celebrate({
+        [Segments.BODY]: Joi.object().keys({
+            comment: Joi.string().max(100).required(),
+        }),
+    }),
+    verify,
+    questionsController.postComment
+);
+
+router.get('/:id/answers/:aid/comments/:cid', questionsController.getAComment);
+
+router.patch(
+    '/:id/answers/:aid/comments/:cid',
+    celebrate({
+        [Segments.BODY]: Joi.object().keys({
+            comment: Joi.string().max(100).required(),
+        }),
+    }),
+    verify,
+    questionsController.updateComment
+);
+
+router.delete(
+    '/:id/answers/:aid/comments/:cid',
+    verify,
+    questionsController.deleteAComment
 );
 export default router;

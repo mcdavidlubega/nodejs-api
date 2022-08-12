@@ -6,7 +6,7 @@ const questionsSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     preferedAnswer: String,
     dateCreated: { type: Date, default: Date.now(), immutable: true },
-    dateUpdated: { type: Date, defaault: Date.now() },
+    dateUpdated: { type: Date, default: Date.now() },
 });
-
+questionsSchema.index({ title: 'text' });
 export default questionsSchema;

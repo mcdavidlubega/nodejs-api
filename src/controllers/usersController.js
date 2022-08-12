@@ -1,9 +1,16 @@
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
-import jwt from 'jsonwebtoken';
 import User from '../models/Users';
+import Question from '../models/Questions';
 
 class usersController {
+    /**
+     * Create a new user
+     * @param {*} req
+     * @param {*} res
+     * @returns userId, username, email, password
+     */
+
     static async registerUser(req, res) {
         const { username, email, password } = req.body;
 
@@ -25,33 +32,51 @@ class usersController {
                 email,
                 password: hashedPass,
             });
-            //   const newUser = user.save();
-            return res.status(200).json({
-                userId: user.userId,
+            return res.status(201).json({
+                userId: user._id,
                 username: user.username,
                 email: user.email,
                 password: '********',
+                role: user.role,
             });
         } catch (err) {
             return res.status(400).json({ message: err });
         }
     }
 
-    static async loginUser(req, res) {
-        const { email, password } = req.body;
-        const user = await User.findOne({ email });
-        if (!user) return res.status(400).json({ message: 'Invalid Email' });
-        const validPass = await bcrypt.compare(password, user.password);
-        if (!validPass)
-            return res.status(400).json({ message: 'Invalid Password' });
-        const token = jwt.sign({ userId: user._id }, process.env.TOKEN_SECRET);
-        return res.header('auth-token', token).json({
-            userId: user._id,
-            username: user.username,
-            email: user.email,
-            password: '********',
-            token,
-        });
+    /**
+     * Delete a user
+     * @param {*} req
+     * @param {*} res
+     * @returns
+     */
+    static async deleteUser(req, res) {
+        try {
+            const userExists = await User.findOne({ _id: req.params.id });
+            if (!userExists)
+                return res.status(400).json({ message: 'User not found' });
+            if (userExists.role !== 'admin') {
+                return res.status(400).json({
+                    message: 'You are not authorised to delete users',
+                });
+            }
+
+            const deletedUser = await User.deleteOne({ _id: req.params.id });
+            return res
+                .status(200)
+                .json({ message: 'User Deleted ', deletedUser });
+        } catch (err) {
+            return res.status(400).json({ message: err });
+        }
+    }
+
+    static async getAllUserQuestions(req, res) {
+        try {
+            const questions = await Question.find({ userId: req.params.id });
+            return res.status(200).json(questions);
+        } catch (err) {
+            return res.status(400).json({ message: err });
+        }
     }
 }
 

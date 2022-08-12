@@ -1,12 +1,33 @@
 import mongoose from 'mongoose';
 import Question from '../models/Questions';
 import Answer from '../models/Answers';
+import Comment from '../models/Comments';
 
 class questionsController {
     static async getAllQuestions(req, res) {
         try {
             const questions = await Question.find();
+            if (questions.length < 1)
+                return res
+                    .status(200)
+                    .json({ message: 'There are no questions' });
             return res.status(200).json(questions);
+        } catch (err) {
+            return res.status(400).json({ message: err });
+        }
+    }
+
+    static async searchQuestions(req, res) {
+        try {
+            const { search } = req.body;
+            const searchResults = await Question.find({
+                $text: {
+                    $search: search,
+                },
+            });
+            if (searchResults.length < 1)
+                return res.status(401).json({ message: 'No questions found' });
+            return res.status(200).json(searchResults);
         } catch (err) {
             return res.status(400).json({ message: err });
         }
@@ -24,13 +45,36 @@ class questionsController {
         }
     }
 
+    static async getMostAnsweredQuestions(req, res) {
+        try {
+            const questions = await Answer.aggregate([
+                // Grouping pipeline
+                {
+                    $group: {
+                        _id: '$questionId',
+                        answersCount: { $sum: 1 },
+                    },
+                },
+                // Sorting pipeline
+                { $sort: { answersCount: -1 } },
+                // Optionally limit results
+                { $limit: 5 },
+            ]);
+            return res.status(200).json(questions);
+        } catch (err) {
+            return res.status(400).json({ message: err });
+        }
+    }
+
     static async postQuestion(req, res) {
         const { title, description } = req.body;
+        const { userId } = req.user;
+
         try {
             const newQuestion = await Question.create({
                 title,
                 description,
-                userId: req.user.userId,
+                userId,
             });
             return res.status(201).json(newQuestion);
         } catch (err) {
@@ -70,14 +114,19 @@ class questionsController {
     }
 
     static async deleteQuestion(req, res) {
-        const isAuthor = await Question.findOne({ userId: req.params.id });
-        if (String(isAuthor.userId) !== req.user.userId)
+        const question = await Question.findOne({ _id: req.params.id });
+        // console.log(String(question.userId));
+        // console.log(req.user.userId);
+
+        if (String(question.userId) !== req.user.userId)
             return res.status(401).json({ message: 'Not author' });
         try {
-            const question = await Question.deleteOne({ _id: req.params.id });
+            const deltedQuestion = await Question.deleteOne({
+                _id: req.params.id,
+            });
             return res
                 .status(200)
-                .json({ message: 'Question Deleted', question });
+                .json({ message: 'Question deleted', deltedQuestion });
         } catch (err) {
             return res.status(400).json({ message: err });
         }
@@ -217,6 +266,82 @@ class questionsController {
             return res
                 .status(200)
                 .json({ message: 'Answer Deleted ', deletedAnswer });
+        } catch (err) {
+            return res.status(400).json({ message: err });
+        }
+    }
+
+    static async getComments(req, res) {
+        try {
+            const answer = await Answer.findOne({ _id: req.params.aid });
+            const comments = await Comment.find({ answerId: req.params.aid });
+            return res.status(200).json({ Answer: answer, Comments: comments });
+        } catch (err) {
+            return res.status(400).json({
+                message: 'Could not find any comments for this answer',
+            });
+        }
+    }
+
+    static async getAComment(req, res) {
+        try {
+            const answer = await Answer.findOne({ _id: req.params.aid });
+            const comment = await Comment.findOne({ _id: req.params.cid });
+            return res
+                .status(200)
+                .json({ Answer: answer.answer, Comment: comment });
+        } catch (err) {
+            return res.status(400).json({
+                message: 'Could not find comment',
+            });
+        }
+    }
+
+    static async postComment(req, res) {
+        try {
+            const comment = await Comment.create({
+                answerId: req.params.aid,
+                comment: req.body.comment,
+                userId: req.user.userId,
+            });
+
+            return res.status(200).json(comment);
+        } catch (err) {
+            return res.status(400).json({ message: err });
+        }
+    }
+
+    static async updateComment(req, res) {
+        try {
+            const comment = await Comment.findByIdAndUpdate(
+                { _id: req.params.cid },
+                {
+                    $set: { comment: req.body.comment },
+                },
+                { new: true }
+            );
+            return res.status(201).json(comment);
+        } catch (err) {
+            return res.status(400).json({ message: err });
+        }
+    }
+
+    static async deleteAComment(req, res) {
+        try {
+            const commentAuthor = await Comment.findOne({
+                userId: req.user.userId,
+            });
+            if (!commentAuthor)
+                return (400).json({
+                    message: 'You are not authorized to delete this comment',
+                });
+
+            const deletedComment = await Comment.findOneAndDelete({
+                _id: req.params.cid,
+            });
+            return res
+                .status(200)
+                .json({ message: 'Comment Deleted', deletedComment });
         } catch (err) {
             return res.status(400).json({ message: err });
         }
