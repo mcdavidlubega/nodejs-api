@@ -3,133 +3,35 @@ import request from 'supertest';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
 import app from '../app';
-import User from '../models/Users';
-import Question from '../models/Questions';
-import Answer from '../models/Answers';
+import { createUsers, deleteUsers } from './testData/usersTestData';
+import { createAnswers, deleteAnswers } from './testData/answersTestData';
+import { createQuestions, deleteQuestions } from './testData/questionsTestData';
+
+import { qIds, aIds } from './testData/dataIds';
 
 describe('Question Tests', () => {
     // eslint-disable-next-line no-unused-vars
     let token;
-
-    const id1 = new mongoose.Types.ObjectId();
-    const id2 = new mongoose.Types.ObjectId();
-    const id3 = new mongoose.Types.ObjectId();
-    const id4 = new mongoose.Types.ObjectId();
-    const id5 = new mongoose.Types.ObjectId();
-
-    const aid1 = new mongoose.Types.ObjectId();
-    const aid2 = new mongoose.Types.ObjectId();
-    const aid3 = new mongoose.Types.ObjectId();
-    const aid4 = new mongoose.Types.ObjectId();
-    const aid5 = new mongoose.Types.ObjectId();
-    const aid6 = new mongoose.Types.ObjectId();
-    const aid7 = new mongoose.Types.ObjectId();
-    const aid8 = new mongoose.Types.ObjectId();
+    const { id1 } = qIds;
+    const { aid1 } = aIds;
 
     // eslint-disable-next-line func-names
     beforeEach(async function () {
-        await request(app).post('/api/v1/users/register').send({
-            username: 'martin',
-            email: 'martin@gmail.com',
-            password: '12345678',
-        });
+        await createUsers();
+        await createQuestions();
+        await createAnswers();
 
         const res = await request(app).post('/api/v1/auth/login').send({
-            email: 'martin@gmail.com',
+            email: 'user1@gmail.com',
             password: '12345678',
         });
         token = res.body.token;
-        const verifiedToken = jwt.verify(token, process.env.TOKEN_SECRET);
-        const { userId } = verifiedToken;
-
-        await Question.insertMany(
-            {
-                _id: id1,
-                userId,
-                title: 'Question One',
-                description: 'This is a description of question one',
-            },
-            {
-                _id: id2,
-                userId,
-                title: 'Question Two',
-                description: 'This is a description of question two',
-            },
-            {
-                _id: id3,
-                userId,
-                title: 'Question Three',
-                description: 'This is a description of question three',
-            },
-            {
-                _id: id4,
-                userId,
-                title: 'Question Four',
-                description: 'This is a description of question four',
-            },
-            {
-                _id: id5,
-                userId,
-                title: 'Question Five',
-                description: 'This is a description of question five',
-            }
-        );
-        await Answer.insertMany(
-            {
-                _id: aid1,
-                userId,
-                questionId: id1,
-                answer: 'Answer for question 1',
-            },
-            {
-                _id: aid2,
-                userId,
-                questionId: id1,
-                answer: 'Answer for question 1',
-            },
-            {
-                _id: aid3,
-                userId,
-                questionId: id1,
-                answer: 'Answer for question 1',
-            },
-            {
-                _id: aid4,
-                userId,
-                questionId: id2,
-                answer: 'Answer for question 2',
-            },
-            {
-                _id: aid5,
-                userId,
-                questionId: id2,
-                answer: 'Answer for question 2',
-            },
-            {
-                _id: aid6,
-                userId,
-                questionId: id3,
-                answer: 'Answer for question 3',
-            },
-            {
-                _id: aid7,
-                userId,
-                questionId: id4,
-                answer: 'Answer for question 4',
-            },
-            {
-                _id: aid8,
-                userId,
-                questionId: id5,
-                answer: 'Answer for question 5',
-            }
-        );
     });
     // eslint-disable-next-line func-names
     afterEach(async function () {
-        await User.deleteMany({});
-        await Question.deleteMany({});
-        await Answer.deleteMany({});
+        await deleteUsers();
+        await deleteQuestions();
+        await deleteAnswers();
     });
     it('should get all questions', async () => {
         const res = await request(app).get('/api/v1/questions');
@@ -144,7 +46,7 @@ describe('Question Tests', () => {
         );
     });
     it('should retun a message if there are no questions', async () => {
-        await Question.deleteMany({});
+        await deleteQuestions();
         const res = await request(app).get('/api/v1/questions');
         expect(res.status).toEqual(200);
         expect(res.body).toEqual({ message: 'There are no questions' });

@@ -1,34 +1,31 @@
 /* eslint-disable no-undef */
 import request from 'supertest';
 import app from '../app';
-import User from '../models/Users';
+import { createUsers, deleteUsers } from './testData/usersTestData';
 
-describe('authentication', () => {
+describe('User Tests', () => {
     // eslint-disable-next-line no-unused-vars
     let token;
     // eslint-disable-next-line func-names
     beforeEach(async function () {
-        await request(app).post('/api/v1/users/register').send({
-            username: 'martin',
-            email: 'martin@gmail.com',
+        await createUsers();
+
+        const res = await request(app).post('/api/v1/auth/login').send({
+            email: 'user1@gmail.com',
             password: '12345678',
         });
 
-        const res = await request(app).post('/api/v1/auth/login').send({
-            email: 'martin@gmail.com',
-            password: '12345678',
-        });
         token = res.body.token;
     });
     // eslint-disable-next-line func-names
     afterEach(async function () {
-        await User.deleteMany({});
+        await deleteUsers();
     });
 
     it('should fail to register a user if email already exists', async () => {
         const res = await request(app).post('/api/v1/users/register').send({
             username: 'xenic',
-            email: 'martin@gmail.com',
+            email: 'user1@gmail.com',
             password: '12345678',
         });
         expect(res.status).toEqual(400);
@@ -36,7 +33,7 @@ describe('authentication', () => {
     });
     it('should fail to register a user if username already exists', async () => {
         const res = await request(app).post('/api/v1/users/register').send({
-            username: 'martin',
+            username: 'user1',
             email: 'xenicmark@gmail.com',
             password: '12345678',
         });
@@ -45,15 +42,15 @@ describe('authentication', () => {
     });
     it('should register a user', async () => {
         const res = await request(app).post('/api/v1/users/register').send({
-            username: 'xenic',
-            email: 'xenicmark@gmail.com',
+            username: 'user6',
+            email: 'user6@gmail.com',
             password: '12345678',
         });
         expect(res.status).toEqual(201);
         expect(res.body).toEqual(
             expect.objectContaining({
-                username: 'xenic',
-                email: 'xenicmark@gmail.com',
+                username: 'user6',
+                email: 'user6@gmail.com',
                 password: '********',
                 role: 'user',
             })

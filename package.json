@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "env-cmd -f ./config/test.env jest src/tests/questions.test.js",
+        "test": "env-cmd -f ./config/test.env jest --watch src/tests/answers.test.js",
         "test:coverage": "env-cmd -f ./config/test.env jest --coverage",
         "test:coveralls": "jest --coverage && coveralls < coverage/lcov.info",
         "start": "env-cmd -f ./config/prod.env node build/index.js",

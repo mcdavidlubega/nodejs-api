@@ -150,10 +150,9 @@ class questionsController {
     }
 
     static async getAnswers(req, res) {
-        const question = await Question.findOne({ _id: req.params.id });
         try {
             const answers = await Answer.find({ questionId: req.params.id });
-            return res.status(200).json({ question, answers });
+            return res.status(200).json({ answers });
         } catch (err) {
             return res.status(400).json({ message: err });
         }
@@ -187,17 +186,20 @@ class questionsController {
     }
 
     static async upVote(req, res) {
-        const answer = await Answer.findOne({ _id: req.params.aid });
-        const upVotes = answer.upvotes;
-        const downVotes = answer.downvotes;
-        const upVoted = upVotes.findIndex((vote) => vote === req.user.userId);
-        if (upVoted > -1) {
-            return res.status(401).json({ message: 'You already voted' });
-        }
-        const downVoted = downVotes.findIndex(
-            (vote) => vote === req.user.userId
-        );
         try {
+            const answer = await Answer.findOne({ _id: req.params.aid });
+            const upVotes = answer.upvotes;
+            const downVotes = answer.downvotes;
+            const upVoted = upVotes.findIndex(
+                (vote) => vote === req.user.userId
+            );
+            if (upVoted > -1) {
+                return res.status(401).json({ message: 'You already voted' });
+            }
+            const downVoted = downVotes.findIndex(
+                (vote) => vote === req.user.userId
+            );
+
             const makeVote = await Answer.findById(req.params.aid);
             if (downVoted > -1) makeVote.downvotes.splice(downVoted, 1);
             makeVote.upvotes.push(req.user.userId);
@@ -233,7 +235,7 @@ class questionsController {
     static async resetVote(req, res) {
         const answer = await Answer.findOne({ _id: req.params.aid });
         if (!answer)
-            return res.status(400).json({ message: 'Question not found' });
+            return res.status(400).json({ message: 'Answer not found' });
         const upVotes = answer.upvotes;
         const downVotes = answer.downvotes;
         const downVoted = downVotes.findIndex(
