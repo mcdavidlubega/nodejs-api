@@ -14,7 +14,7 @@ async function createUsers() {
             username: 'user1',
             password: hashedPass,
             email: 'user1@gmail.com',
-            role: 'user',
+            role: 'admin',
         },
         {
             _id: uid2,

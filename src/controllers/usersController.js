@@ -50,25 +50,6 @@ class usersController {
      * @param {*} res
      * @returns
      */
-    static async deleteUser(req, res) {
-        try {
-            const userExists = await User.findOne({ _id: req.params.id });
-            if (!userExists)
-                return res.status(400).json({ message: 'User not found' });
-            if (userExists.role !== 'admin') {
-                return res.status(400).json({
-                    message: 'You are not authorised to delete users',
-                });
-            }
-
-            const deletedUser = await User.deleteOne({ _id: req.params.id });
-            return res
-                .status(200)
-                .json({ message: 'User Deleted ', deletedUser });
-        } catch (err) {
-            return res.status(400).json({ message: err });
-        }
-    }
 
     static async getAllUserQuestions(req, res) {
         try {

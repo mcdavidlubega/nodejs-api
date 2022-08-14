@@ -11,9 +11,9 @@ var _bcrypt = _interopRequireDefault(require("bcrypt"));
 
 var _uuid = require("uuid");
 
-var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
-
 var _Users = _interopRequireDefault(require("../models/Users"));
+
+var _Questions = _interopRequireDefault(require("../models/Questions"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
@@ -36,7 +36,14 @@ var usersController = /*#__PURE__*/function () {
 
   _createClass(usersController, null, [{
     key: "registerUser",
-    value: function () {
+    value:
+    /**
+     * Create a new user
+     * @param {*} req
+     * @param {*} res
+     * @returns userId, username, email, password
+     */
+    function () {
       var _registerUser = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(req, res) {
         var _req$body, username, email, password, usernameExists, emailExists, salt, hashedPass, user;
 
@@ -58,8 +65,8 @@ var usersController = /*#__PURE__*/function () {
                   break;
                 }
 
-                return _context.abrupt("return", res.json({
-                  message: 'Username already exisits'
+                return _context.abrupt("return", res.status(400).json({
+                  message: 'Username already exists'
                 }));
 
               case 6:
@@ -76,7 +83,7 @@ var usersController = /*#__PURE__*/function () {
                   break;
                 }
 
-                return _context.abrupt("return", res.json({
+                return _context.abrupt("return", res.status(400).json({
                   message: 'Email already exists'
                 }));
 
@@ -103,10 +110,11 @@ var usersController = /*#__PURE__*/function () {
               case 20:
                 user = _context.sent;
                 return _context.abrupt("return", res.status(201).json({
-                  userId: user.userId,
+                  userId: user._id,
                   username: user.username,
                   email: user.email,
-                  password: '********'
+                  password: '********',
+                  role: user.role
                 }));
 
               case 24:
@@ -130,74 +138,52 @@ var usersController = /*#__PURE__*/function () {
 
       return registerUser;
     }()
-  }, {
-    key: "loginUser",
-    value: function () {
-      var _loginUser = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
-        var _req$body2, email, password, user, validPass, token;
+    /**
+     * Delete a user
+     * @param {*} req
+     * @param {*} res
+     * @returns
+     */
 
+  }, {
+    key: "getAllUserQuestions",
+    value: function () {
+      var _getAllUserQuestions = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(req, res) {
+        var questions;
         return _regeneratorRuntime().wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
-                _req$body2 = req.body, email = _req$body2.email, password = _req$body2.password;
+                _context2.prev = 0;
                 _context2.next = 3;
-                return _Users["default"].findOne({
-                  email: email
+                return _Questions["default"].find({
+                  userId: req.params.id
                 });
 
               case 3:
-                user = _context2.sent;
+                questions = _context2.sent;
+                return _context2.abrupt("return", res.status(200).json(questions));
 
-                if (user) {
-                  _context2.next = 6;
-                  break;
-                }
-
+              case 7:
+                _context2.prev = 7;
+                _context2.t0 = _context2["catch"](0);
                 return _context2.abrupt("return", res.status(400).json({
-                  message: 'User not found'
+                  message: _context2.t0
                 }));
 
-              case 6:
-                _context2.next = 8;
-                return _bcrypt["default"].compare(password, user.password);
-
-              case 8:
-                validPass = _context2.sent;
-
-                if (validPass) {
-                  _context2.next = 11;
-                  break;
-                }
-
-                return _context2.abrupt("return", res.status(400).json({
-                  message: 'Invalid Password'
-                }));
-
-              case 11:
-                token = _jsonwebtoken["default"].sign({
-                  userId: user._id
-                }, process.env.TOKEN_SECRET);
-                return _context2.abrupt("return", res.header('auth-token', token).json({
-                  userId: user._id,
-                  username: user.username,
-                  email: user.email,
-                  password: '********'
-                }));
-
-              case 13:
+              case 10:
               case "end":
                 return _context2.stop();
             }
           }
-        }, _callee2);
+        }, _callee2, null, [[0, 7]]);
       }));
 
-      function loginUser(_x3, _x4) {
-        return _loginUser.apply(this, arguments);
+      function getAllUserQuestions(_x3, _x4) {
+        return _getAllUserQuestions.apply(this, arguments);
       }
 
-      return loginUser;
+      return getAllUserQuestions;
     }()
   }]);
 

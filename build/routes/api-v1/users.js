@@ -7,7 +7,7 @@ exports["default"] = void 0;
 
 var _express = require("express");
 
-var _celebrate3 = require("celebrate");
+var _celebrate2 = require("celebrate");
 
 var _usersController = _interopRequireDefault(require("../../controllers/usersController"));
 
@@ -16,14 +16,23 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 var router = (0, _express.Router)();
-router.post('/register', (0, _celebrate3.celebrate)(_defineProperty({}, _celebrate3.Segments.BODY, _celebrate3.Joi.object().keys({
-  username: _celebrate3.Joi.string().max(50).min(5).required(),
-  email: _celebrate3.Joi.string().max(50).required().email(),
-  password: _celebrate3.Joi.string().min(8).required()
+/**
+ * Register a new user
+ */
+
+router.post('/register', (0, _celebrate2.celebrate)(_defineProperty({}, _celebrate2.Segments.BODY, _celebrate2.Joi.object().keys({
+  username: _celebrate2.Joi.string().max(50).min(5).required(),
+  email: _celebrate2.Joi.string().max(50).required().email(),
+  password: _celebrate2.Joi.string().min(8).required()
 }))), _usersController["default"].registerUser);
-router.post('/login', (0, _celebrate3.celebrate)(_defineProperty({}, _celebrate3.Segments.BODY, _celebrate3.Joi.object().keys({
-  email: _celebrate3.Joi.string().max(50).required().email(),
-  password: _celebrate3.Joi.string().min(8).required()
-}))), _usersController["default"].loginUser);
+/**
+ * Delete an existing user
+ */
+
+/**
+ * Get All Questions Posted By A User
+ */
+
+router.get('/:id/questions', _usersController["default"].getAllUserQuestions);
 var _default = router;
 exports["default"] = _default;

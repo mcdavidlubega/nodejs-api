@@ -1,14 +1,19 @@
 /* eslint-disable no-undef */
 import request from 'supertest';
 import app from '../app';
+
 import { createUsers, deleteUsers } from './testData/usersTestData';
+import { createQuestions, deleteQuestions } from './testData/questionsTestData';
+import { uIds } from './testData/dataIds';
 
 describe('User Tests', () => {
     // eslint-disable-next-line no-unused-vars
     let token;
+    const { uid1 } = uIds;
     // eslint-disable-next-line func-names
     beforeEach(async function () {
         await createUsers();
+        await createQuestions();
 
         const res = await request(app).post('/api/v1/auth/login').send({
             email: 'user1@gmail.com',
@@ -20,6 +25,7 @@ describe('User Tests', () => {
     // eslint-disable-next-line func-names
     afterEach(async function () {
         await deleteUsers();
+        await deleteQuestions();
     });
 
     it('should fail to register a user if email already exists', async () => {
@@ -55,5 +61,13 @@ describe('User Tests', () => {
                 role: 'user',
             })
         );
+    });
+    it('should return questions posted by a specific user', async () => {
+        const res = await request(app).get(`/api/v1/users/${uid1}/questions`);
+        expect(res.status).toEqual(200);
+        expect(res.body[0]).toMatchObject({
+            userId: uid1,
+            title: 'Question One',
+        });
     });
 });

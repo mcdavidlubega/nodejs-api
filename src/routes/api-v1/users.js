@@ -1,7 +1,6 @@
 import { Router } from 'express';
 import { Joi, celebrate, Segments } from 'celebrate';
 import usersController from '../../controllers/usersController';
-import verify from '../../middleware/verfiyToken';
 
 const router = Router();
 /**
@@ -23,18 +22,10 @@ router.post(
  * Delete an existing user
  */
 
-router.delete('/delete/:id', usersController.deleteUser);
-
-/**
- * Get User Info (Profile)
- * Todo: Add logic to controller
- */
-router.get('/users/:username', (req, res) => {});
-
 /**
  * Get All Questions Posted By A User
  */
 
-router.get('/:id/questions', verify, usersController.getAllUserQuestions);
+router.get('/:id/questions', usersController.getAllUserQuestions);
 
 export default router;

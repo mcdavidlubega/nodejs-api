@@ -276,19 +276,34 @@ class questionsController {
     static async getComments(req, res) {
         try {
             const answer = await Answer.findOne({ _id: req.params.aid });
+            if (!answer)
+                return res.status(200).json({
+                    message: 'Answer does not exist',
+                });
             const comments = await Comment.find({ answerId: req.params.aid });
+            if (comments.length < 1)
+                return res.status(200).json({
+                    message: 'Could not find any comments for this answer',
+                });
             return res.status(200).json({ Answer: answer, Comments: comments });
         } catch (err) {
-            return res.status(400).json({
-                message: 'Could not find any comments for this answer',
-            });
+            return res.status(400).json({ message: err });
         }
     }
 
     static async getAComment(req, res) {
         try {
             const answer = await Answer.findOne({ _id: req.params.aid });
+            if (!answer)
+                return res.status(400).json({
+                    message: 'Answer does not exist',
+                });
+
             const comment = await Comment.findOne({ _id: req.params.cid });
+            if (!comment)
+                return res.status(400).json({
+                    message: 'Comment does not exist',
+                });
             return res
                 .status(200)
                 .json({ Answer: answer.answer, Comment: comment });
@@ -315,6 +330,12 @@ class questionsController {
 
     static async updateComment(req, res) {
         try {
+            const author = await Comment.findOne({ _id: req.params.cid });
+            if (String(author.userId) !== req.user.userId)
+                return res
+                    .status(401)
+                    .json({ message: 'You are not the author' });
+
             const comment = await Comment.findByIdAndUpdate(
                 { _id: req.params.cid },
                 {
@@ -329,21 +350,18 @@ class questionsController {
     }
 
     static async deleteAComment(req, res) {
+        const comment = await Comment.findOne({ _id: req.params.cid });
+        if (!comment)
+            return res.status(400).json({ message: 'Comment not found' });
+        if (String(comment.userId) !== req.user.userId)
+            return res.status(401).json({ message: 'Not author' });
         try {
-            const commentAuthor = await Comment.findOne({
-                userId: req.user.userId,
-            });
-            if (!commentAuthor)
-                return (400).json({
-                    message: 'You are not authorized to delete this comment',
-                });
-
-            const deletedComment = await Comment.findOneAndDelete({
+            const deletedComment = await Comment.deleteOne({
                 _id: req.params.cid,
             });
             return res
                 .status(200)
-                .json({ message: 'Comment Deleted', deletedComment });
+                .json({ message: 'Comment deleted', deletedComment });
         } catch (err) {
             return res.status(400).json({ message: err });
         }
