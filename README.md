@@ -1,3 +1,5 @@
+[![NODEJS API](https://github.com/mcdavidlubega/nodejs-api/actions/workflows/node.js.yml/badge.svg)](https://github.com/mcdavidlubega/nodejs-api/actions/workflows/node.js.yml)
+
 # NodeJS-Api
 
 A NodeJs API to replciate stack over flow using Express and MongoDB
