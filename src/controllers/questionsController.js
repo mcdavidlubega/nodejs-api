@@ -218,7 +218,7 @@ class questionsController {
             (vote) => vote === req.user.userId
         );
         if (downVoted > -1) {
-            return res.status(401).json({ message: 'You already voted' });
+            return res.status(400).json({ message: 'You already voted' });
         }
         const upVoted = upVotes.findIndex((vote) => vote === req.user.userId);
         try {

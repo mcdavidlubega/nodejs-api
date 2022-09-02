@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import request from 'supertest';
+import mongoose from 'mongoose';
 import app from '../app';
 
 import { createUsers, deleteUsers } from './testData/usersTestData';
@@ -9,6 +10,11 @@ describe('Authentication Tests', () => {
     // eslint-disable-next-line no-unused-vars
     let token;
     const { uid1 } = uIds;
+
+    beforeAll((done) => {
+        done();
+    });
+
     // eslint-disable-next-line func-names
     beforeEach(async function () {
         await createUsers();
@@ -17,6 +23,12 @@ describe('Authentication Tests', () => {
     afterEach(async function () {
         await deleteUsers();
     });
+
+    afterAll((done) => {
+        mongoose.connection.close();
+        done();
+    });
+
     it('it should generate a token for a user if they are registered', async () => {
         const res = await request(app).post('/api/v1/auth/login').send({
             email: 'user1@gmail.com',

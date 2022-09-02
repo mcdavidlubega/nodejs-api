@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 import request from 'supertest';
+import mongoose from 'mongoose';
 import app from '../app';
 import { createUsers, deleteUsers } from './testData/usersTestData';
 import { createAnswers, deleteAnswers } from './testData/answersTestData';
@@ -14,6 +15,10 @@ describe('Comments Tests', () => {
     const { id1 } = qIds;
     const { aid1, aid2, aid3, aid9 } = aIds;
     const { cid1, cid2, cid4, cid14 } = cIds;
+
+    beforeAll((done) => {
+        done();
+    });
 
     // eslint-disable-next-line func-names
     beforeEach(async function () {
@@ -38,16 +43,16 @@ describe('Comments Tests', () => {
         await deleteComments();
     });
 
+    afterAll((done) => {
+        mongoose.connection.close();
+        done();
+    });
+
     it('should get all comments on a specific answer', async () => {
         const res = await request(app).get(
             `/api/v1/questions/${id1}/answers/${aid1}/comments`
         );
         expect(res.status).toEqual(200);
-        expect(res.body.Answer).toMatchObject({
-            _id: aid1,
-            answer: 'First answer for question 1',
-            questionId: id1,
-        });
         expect(res.body.Comments[0]).toMatchObject({
             answerId: aid1,
             comment: 'This is a comment on answer for question 1',

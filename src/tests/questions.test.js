@@ -15,6 +15,9 @@ describe('Question Tests', () => {
     const { id1 } = qIds;
     const { aid1 } = aIds;
 
+    beforeAll((done) => {
+        done();
+    });
     // eslint-disable-next-line func-names
     beforeEach(async function () {
         await createUsers();
@@ -33,6 +36,12 @@ describe('Question Tests', () => {
         await deleteQuestions();
         await deleteAnswers();
     });
+
+    afterAll((done) => {
+        mongoose.connection.close();
+        done();
+    });
+
     it('should get all questions', async () => {
         const res = await request(app).get('/api/v1/questions');
         expect(res.status).toEqual(200);

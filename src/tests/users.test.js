@@ -1,9 +1,12 @@
 /* eslint-disable no-undef */
 import request from 'supertest';
+import mongoose from 'mongoose';
 import app from '../app';
 
 import { createUsers, deleteUsers } from './testData/usersTestData';
+import { createAnswers, deleteAnswers } from './testData/answersTestData';
 import { createQuestions, deleteQuestions } from './testData/questionsTestData';
+import { createComments, deleteComments } from './testData/commentsTestData';
 import { uIds } from './testData/dataIds';
 
 describe('User Tests', () => {
@@ -11,6 +14,10 @@ describe('User Tests', () => {
     let token;
     const { uid1 } = uIds;
     // eslint-disable-next-line func-names
+    beforeAll((done) => {
+        done();
+    });
+
     beforeEach(async function () {
         await createUsers();
         await createQuestions();
@@ -26,6 +33,11 @@ describe('User Tests', () => {
     afterEach(async function () {
         await deleteUsers();
         await deleteQuestions();
+    });
+
+    afterAll((done) => {
+        mongoose.connection.close();
+        done();
     });
 
     it('should fail to register a user if email already exists', async () => {

@@ -1,8 +1,18 @@
 /* eslint-disable no-undef */
 import request from 'supertest';
+import mongoose from 'mongoose';
 import app from '../app';
 
 describe('Error Handling tests', () => {
+    beforeAll((done) => {
+        done();
+    });
+
+    afterAll((done) => {
+        mongoose.connection.close();
+        done();
+    });
+
     it('should retrun "Resouce not found" when you get from the wrong url', async () => {
         const res = await request(app).get('/url');
         expect(res.status).toEqual(404);

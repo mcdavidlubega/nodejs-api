@@ -15,6 +15,10 @@ describe('Answer Tests', () => {
     const { id1, id6 } = qIds;
     const { aid1, aid2, aid3, aid9 } = aIds;
 
+    beforeAll((done) => {
+        done();
+    });
+
     // eslint-disable-next-line func-names
     beforeEach(async function () {
         await createUsers();
@@ -35,6 +39,12 @@ describe('Answer Tests', () => {
         await deleteQuestions();
         await deleteAnswers();
     });
+
+    afterAll((done) => {
+        mongoose.connection.close();
+        done();
+    });
+
     it('should post an answer to a question', async () => {
         const res = await request(app)
             .post(`/api/v1/questions/${id1}/answers`)
@@ -177,7 +187,7 @@ describe('Answer Tests', () => {
         const res = await request(app)
             .patch(`/api/v1/questions/${id1}/answers/${aid2}/downvote`)
             .set({ 'auth-token': token });
-        expect(res.status).toEqual(401);
+        expect(res.status).toEqual(400);
         expect(res.body).toEqual({ message: 'You already voted' });
     });
     it('should reset the vote on answer if the user is logged in', async () => {
