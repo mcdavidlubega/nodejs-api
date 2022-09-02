@@ -18,7 +18,7 @@ You may also see any lint errors in the console.
 
 ### `npm test`
 
-Launches the test runner in the interactive watch mode.\
+Launches the test runner. Tests run in band.
 See the [jest documentation](https://jestjs.io/docs/getting-started) for more information on jest.
 See the section on [supertest](https://github.com/visionmedia/supertest) for more information for supertest.
 
