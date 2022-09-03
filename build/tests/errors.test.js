@@ -4,6 +4,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 
 var _supertest = _interopRequireDefault(require("supertest"));
 
+var _mongoose = _interopRequireDefault(require("mongoose"));
+
 var _app = _interopRequireDefault(require("../app"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
@@ -15,6 +17,14 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
 describe('Error Handling tests', function () {
+  beforeAll(function (done) {
+    done();
+  });
+  afterAll(function (done) {
+    _mongoose["default"].connection.close();
+
+    done();
+  });
   it('should retrun "Resouce not found" when you get from the wrong url', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var res;
     return _regeneratorRuntime().wrap(function _callee$(_context) {

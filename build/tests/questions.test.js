@@ -30,7 +30,10 @@ describe('Question Tests', function () {
   // eslint-disable-next-line no-unused-vars
   var token;
   var id1 = _dataIds.qIds.id1;
-  var aid1 = _dataIds.aIds.aid1; // eslint-disable-next-line func-names
+  var aid1 = _dataIds.aIds.aid1;
+  beforeAll(function (done) {
+    done();
+  }); // eslint-disable-next-line func-names
 
   beforeEach( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var res;
@@ -91,6 +94,11 @@ describe('Question Tests', function () {
       }
     }, _callee2);
   })));
+  afterAll(function (done) {
+    _mongoose["default"].connection.close();
+
+    done();
+  });
   it('should get all questions', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
     var res;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {

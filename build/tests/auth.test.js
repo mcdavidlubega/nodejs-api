@@ -4,6 +4,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 
 var _supertest = _interopRequireDefault(require("supertest"));
 
+var _mongoose = _interopRequireDefault(require("mongoose"));
+
 var _app = _interopRequireDefault(require("../app"));
 
 var _usersTestData = require("./testData/usersTestData");
@@ -21,7 +23,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 describe('Authentication Tests', function () {
   // eslint-disable-next-line no-unused-vars
   var token;
-  var uid1 = _dataIds.uIds.uid1; // eslint-disable-next-line func-names
+  var uid1 = _dataIds.uIds.uid1;
+  beforeAll(function (done) {
+    done();
+  }); // eslint-disable-next-line func-names
 
   beforeEach( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -54,6 +59,11 @@ describe('Authentication Tests', function () {
       }
     }, _callee2);
   })));
+  afterAll(function (done) {
+    _mongoose["default"].connection.close();
+
+    done();
+  });
   it('it should generate a token for a user if they are registered', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
     var res;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {

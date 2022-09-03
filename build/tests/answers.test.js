@@ -34,7 +34,10 @@ describe('Answer Tests', function () {
   var aid1 = _dataIds.aIds.aid1,
       aid2 = _dataIds.aIds.aid2,
       aid3 = _dataIds.aIds.aid3,
-      aid9 = _dataIds.aIds.aid9; // eslint-disable-next-line func-names
+      aid9 = _dataIds.aIds.aid9;
+  beforeAll(function (done) {
+    done();
+  }); // eslint-disable-next-line func-names
 
   beforeEach( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var res;
@@ -96,6 +99,11 @@ describe('Answer Tests', function () {
       }
     }, _callee2);
   })));
+  afterAll(function (done) {
+    _mongoose["default"].connection.close();
+
+    done();
+  });
   it('should post an answer to a question', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
     var res;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
@@ -466,7 +474,7 @@ describe('Answer Tests', function () {
 
           case 2:
             res = _context17.sent;
-            expect(res.status).toEqual(401);
+            expect(res.status).toEqual(400);
             expect(res.body).toEqual({
               message: 'You already voted'
             });

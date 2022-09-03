@@ -4,6 +4,8 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 
 var _supertest = _interopRequireDefault(require("supertest"));
 
+var _mongoose = _interopRequireDefault(require("mongoose"));
+
 var _app = _interopRequireDefault(require("../app"));
 
 var _usersTestData = require("./testData/usersTestData");
@@ -26,6 +28,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 describe('Comments Tests', function () {
   var token;
+  var currentUserId;
   var id1 = _dataIds.qIds.id1;
   var aid1 = _dataIds.aIds.aid1,
       aid2 = _dataIds.aIds.aid2,
@@ -34,7 +37,10 @@ describe('Comments Tests', function () {
   var cid1 = _dataIds.cIds.cid1,
       cid2 = _dataIds.cIds.cid2,
       cid4 = _dataIds.cIds.cid4,
-      cid14 = _dataIds.cIds.cid14; // eslint-disable-next-line func-names
+      cid14 = _dataIds.cIds.cid14;
+  beforeAll(function (done) {
+    done();
+  }); // eslint-disable-next-line func-names
 
   beforeEach( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var res;
@@ -104,6 +110,11 @@ describe('Comments Tests', function () {
       }
     }, _callee2);
   })));
+  afterAll(function (done) {
+    _mongoose["default"].connection.close();
+
+    done();
+  });
   it('should get all comments on a specific answer', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
     var res;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {
@@ -116,17 +127,12 @@ describe('Comments Tests', function () {
           case 2:
             res = _context3.sent;
             expect(res.status).toEqual(200);
-            expect(res.body.Answer).toMatchObject({
-              _id: aid1,
-              answer: 'First answer for question 1',
-              questionId: id1
-            });
             expect(res.body.Comments[0]).toMatchObject({
               answerId: aid1,
               comment: 'This is a comment on answer for question 1'
             });
 
-          case 6:
+          case 5:
           case "end":
             return _context3.stop();
         }

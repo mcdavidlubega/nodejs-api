@@ -4,11 +4,17 @@ function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" =
 
 var _supertest = _interopRequireDefault(require("supertest"));
 
+var _mongoose = _interopRequireDefault(require("mongoose"));
+
 var _app = _interopRequireDefault(require("../app"));
 
 var _usersTestData = require("./testData/usersTestData");
 
+var _answersTestData = require("./testData/answersTestData");
+
 var _questionsTestData = require("./testData/questionsTestData");
+
+var _commentsTestData = require("./testData/commentsTestData");
 
 var _dataIds = require("./testData/dataIds");
 
@@ -25,6 +31,9 @@ describe('User Tests', function () {
   var token;
   var uid1 = _dataIds.uIds.uid1; // eslint-disable-next-line func-names
 
+  beforeAll(function (done) {
+    done();
+  });
   beforeEach( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
     var res;
     return _regeneratorRuntime().wrap(function _callee$(_context) {
@@ -76,6 +85,11 @@ describe('User Tests', function () {
       }
     }, _callee2);
   })));
+  afterAll(function (done) {
+    _mongoose["default"].connection.close();
+
+    done();
+  });
   it('should fail to register a user if email already exists', /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee3() {
     var res;
     return _regeneratorRuntime().wrap(function _callee3$(_context3) {

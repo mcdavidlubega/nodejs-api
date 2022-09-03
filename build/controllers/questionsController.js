@@ -699,7 +699,7 @@ var questionsController = /*#__PURE__*/function () {
                   break;
                 }
 
-                return _context12.abrupt("return", res.status(401).json({
+                return _context12.abrupt("return", res.status(400).json({
                   message: 'You already voted'
                 }));
 
