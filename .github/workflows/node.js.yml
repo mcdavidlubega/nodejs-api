@@ -29,11 +29,12 @@ jobs:
               with:
                   mongodb-version: ${{ matrix.mongodb-version }}
 
+            - run: npm ci
+            - run: npm test
+
             - name: Coveralls
               uses: coverallsapp/github-action@master
               with:
                   github-token: ${{ secrets.GITHUB_TOKEN }}
 
-            - run: npm ci
-            - run: npm test
             - run: npm run build

@@ -1,5 +1,7 @@
 [![NODEJS API](https://github.com/mcdavidlubega/nodejs-api/actions/workflows/node.js.yml/badge.svg)](https://github.com/mcdavidlubega/nodejs-api/actions/workflows/node.js.yml)
 
+[![Coverage Status](https://coveralls.io/repos/github/mcdavidlubega/nodejs-api/badge.svg?branch=main)](https://coveralls.io/github/mcdavidlubega/nodejs-api?branch=main)
+
 # NodeJS-Api
 
 A NodeJs API to replciate stack over flow using Express and MongoDB
