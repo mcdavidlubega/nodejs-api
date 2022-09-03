@@ -1,6 +1,4 @@
-[![NODEJS API](https://github.com/mcdavidlubega/nodejs-api/actions/workflows/node.js.yml/badge.svg)](https://github.com/mcdavidlubega/nodejs-api/actions/workflows/node.js.yml)
-
-[![Coverage Status](https://coveralls.io/repos/github/mcdavidlubega/nodejs-api/badge.svg?branch=main)](https://coveralls.io/github/mcdavidlubega/nodejs-api?branch=main)
+![License](https://img.shields.io/badge/License-MIT-1ABA22?style=flat) [![NODEJS API](https://github.com/mcdavidlubega/nodejs-api/actions/workflows/node.js.yml/badge.svg)](https://github.com/mcdavidlubega/nodejs-api/actions/workflows/node.js.yml) [![Coverage Status](https://coveralls.io/repos/github/mcdavidlubega/nodejs-api/badge.svg?branch=main)](https://coveralls.io/github/mcdavidlubega/nodejs-api?branch=main)
 
 # NodeJS-Api
 
