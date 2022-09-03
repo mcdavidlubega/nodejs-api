@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1660512327227" clover="3.2.0">
-  <project timestamp="1660512327227" name="All files">
-    <metrics statements="306" coveredstatements="279" conditionals="56" coveredconditionals="52" methods="41" coveredmethods="40" elements="403" coveredelements="371" complexity="0" loc="306" ncloc="306" packages="9" files="24" classes="24"/>
+<coverage generated="1662209572545" clover="3.2.0">
+  <project timestamp="1662209572545" name="All files">
+    <metrics statements="308" coveredstatements="280" conditionals="56" coveredconditionals="52" methods="42" coveredmethods="40" elements="406" coveredelements="372" complexity="0" loc="308" ncloc="308" packages="9" files="24" classes="24"/>
     <package name="src">
-      <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+      <metrics statements="8" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
       <file name="app.js" path="/Users/mark/node-work/nodejs-api/src/app.js">
-        <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <metrics statements="8" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="1"/>
         <line num="6" count="6" type="stmt"/>
         <line num="8" count="6" type="stmt"/>
         <line num="9" count="6" type="stmt"/>
         <line num="10" count="6" type="stmt"/>
         <line num="11" count="6" type="stmt"/>
-        <line num="13" count="6" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="14" count="6" type="stmt"/>
+        <line num="16" count="6" type="stmt"/>
       </file>
     </package>
     <package name="src.controllers">
@@ -221,7 +223,7 @@
         <metrics statements="6" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="2"/>
         <line num="3" count="6" type="stmt"/>
         <line num="7" count="6" type="stmt"/>
-        <line num="10" count="5" type="stmt"/>
+        <line num="10" count="6" type="stmt"/>
         <line num="13" count="0" type="stmt"/>
         <line num="14" count="0" type="stmt"/>
         <line num="15" count="0" type="stmt"/>
@@ -322,27 +324,27 @@
       </file>
       <file name="users.js" path="/Users/mark/node-work/nodejs-api/src/routes/api-v1/users.js">
         <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-        <line num="6" count="6" type="stmt"/>
-        <line num="10" count="6" type="stmt"/>
-        <line num="30" count="6" type="stmt"/>
+        <line num="5" count="6" type="stmt"/>
+        <line num="9" count="6" type="stmt"/>
+        <line num="29" count="6" type="stmt"/>
       </file>
     </package>
     <package name="src.tests.testData">
       <metrics statements="62" coveredstatements="62" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="8"/>
       <file name="answersTestData.js" path="/Users/mark/node-work/nodejs-api/src/tests/testData/answersTestData.js">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
-        <line num="4" count="3" type="stmt"/>
-        <line num="5" count="3" type="stmt"/>
-        <line num="6" count="3" type="stmt"/>
+        <line num="4" count="4" type="stmt"/>
+        <line num="5" count="4" type="stmt"/>
+        <line num="6" count="4" type="stmt"/>
         <line num="9" count="50" type="stmt"/>
         <line num="75" count="50" type="stmt"/>
         <line num="78" count="50" type="stmt"/>
       </file>
       <file name="commentsTestData.js" path="/Users/mark/node-work/nodejs-api/src/tests/testData/commentsTestData.js">
         <metrics statements="6" coveredstatements="6" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
-        <line num="4" count="1" type="stmt"/>
-        <line num="5" count="1" type="stmt"/>
-        <line num="21" count="1" type="stmt"/>
+        <line num="4" count="2" type="stmt"/>
+        <line num="5" count="2" type="stmt"/>
+        <line num="21" count="2" type="stmt"/>
         <line num="23" count="14" type="stmt"/>
         <line num="103" count="14" type="stmt"/>
         <line num="106" count="14" type="stmt"/>
